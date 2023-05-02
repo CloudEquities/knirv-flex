@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute">
+	<mx:states>
+		<mx:State name="Logged In">
+			<mx:SetProperty target="{panel1}" name="width" value="95%"/>
+			<mx:SetProperty target="{panel1}" name="height" value="95%"/>
+			<mx:RemoveChild target="{password}"/>
+			<mx:RemoveChild target="{username}"/>
+			<mx:RemoveChild target="{label1}"/>
+			<mx:RemoveChild target="{Submit}"/>
+			<mx:RemoveChild target="{label2}"/>
+			<mx:SetProperty target="{panel1}" name="title" value="Members Section"/>
+			<mx:AddChild relativeTo="{panel1}" position="lastChild">
+				<mx:Label x="10" y="10" text="Welcome to the Members Section!"/>
+			</mx:AddChild>
+			<mx:AddChild relativeTo="{panel1}" position="lastChild">
+				<mx:Label x="10" y="36" text="Here you can do great things, like join the forums @ Viper Creations!"/>
+			</mx:AddChild>
+			<mx:AddChild relativeTo="{panel1}" position="lastChild">
+				<mx:Label x="10" y="62" text="Label"/>
+			</mx:AddChild>
+		</mx:State>
+	</mx:states>
+	<mx:Script>
+		<![CDATA[
+			import mx.rpc.events.ResultEvent;
+			
+		]]>
+	</mx:Script>
+	<mx:Script>
+	
+
+<![CDATA[
+
+private function checkLogin(evt:ResultEvent):void
+{
+
+	if(evt.result.loginsuccess == "yes")
+
+	{
+
+	currentState = "Logged In";
+
+	}
+
+	if(evt.result.loginsuccess == "no")
+
+	{
+		
+		mx.controls.Alert.show('Invalid username/password');
+
+	}		
+}
+
+]]>
+
+</mx:Script>
+	<mx:HTTPService id="login_user" result="checkLogin(event)" showBusyCursor="true" method="POST" url="http://www.vipercreations.com/site_admin/login.php" useProxy="false">
+		<mx:request xmlns="">
+			<username>
+				{username.text}
+			</username>
+			<password>
+				{password.text}
+			</password>
+		</mx:request>
+	</mx:HTTPService>
+	
+	<mx:Panel resizeEffect="Resize" width="250" height="200" layout="absolute" title="Login System" horizontalCenter="0" verticalCenter="-2" id="panel1">
+		<mx:Label x="10" y="10" text="Username:" id="label1"/>
+		<mx:TextInput x="10" y="36" id="username"/>
+		<mx:Label x="10" y="66" text="Password:" id="label2"/>
+		<mx:TextInput x="10" y="92" id="password" displayAsPassword="true"/>
+		<mx:Button x="10" y="122" label="Submit" id="Submit" click="login_user.send();"/>
+	</mx:Panel>
+	
+</mx:Application>
